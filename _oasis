@@ -1,0 +1,15 @@
+OASISFormat:  0.4
+Name:         mkaudio
+Version:      0.1.0
+Synopsis:     CLI program for generating audio files
+License:      MIT
+Authors:      John Else
+Copyrights:   (C) 2017 John Else
+BuildTools:   ocamlbuild
+Plugins:      META (0.4), DevFiles (0.4)
+
+Executable mkaudio
+  CompiledObject: best
+  Path:           src
+  MainIs:         mkaudio.ml
+  BuildDepends:   mm
