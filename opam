@@ -5,14 +5,14 @@ homepage: "https://github.com/johnelse/mkaudio"
 bug-reports: "https://github.com/johnelse/mkaudio/ussies"
 dev-repo: "git://github.com/johnelse/mkaudio"
 build: [
-  ["./configure"]
+  ["./configure" "--prefix" prefix]
   [make]
 ]
 install: [
-  [make "PREFIX=%{prefix}%" "install"]
+  [make "install"]
 ]
 remove: [
-  [make "PREFIX=%{prefix}%" "uninstall"]
+  [make "uninstall"]
 ]
 depends: [
   "oasis" {build}
