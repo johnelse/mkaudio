@@ -1,0 +1,4 @@
+PKG cmdliner mm
+S src
+
+B _build/src
