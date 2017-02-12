@@ -12,4 +12,4 @@ Executable mkaudio
   CompiledObject: best
   Path:           src
   MainIs:         mkaudio.ml
-  BuildDepends:   cmdliner, mm
+  BuildDepends:   cmdliner, mm, result

@@ -1,4 +1,4 @@
-PKG cmdliner mm
+PKG cmdliner mm result
 S src
 
 B _build/src

@@ -18,4 +18,5 @@ depends: [
   "oasis" {build}
   "cmdliner"
   "mm"
+  "result"
 ]
