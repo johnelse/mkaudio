@@ -30,6 +30,14 @@ let write_wav channels sample_rate samples generator output_file =
   done;
   Result.Ok (wav#close)
 
+let saw channels sample_rate duration tempo beats frequency output_file =
+  calculate_samples sample_rate duration tempo beats
+  >>= fun samples ->
+    let generator =
+      new Audio.Generator.of_mono
+        (new Audio.Mono.Generator.saw sample_rate frequency) in
+    write_wav channels sample_rate samples generator output_file
+
 let sine channels sample_rate duration tempo beats frequency output_file =
   calculate_samples sample_rate duration tempo beats
   >>= fun samples ->

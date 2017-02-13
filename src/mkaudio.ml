@@ -66,6 +66,22 @@ let output_file =
   let doc = "The file to write." in
   Arg.(required & pos 0 (some string) None & info [] ~docv:"OUTPUTFILE" ~doc)
 
+let saw_cmd =
+  let doc = "write an audio file containing a saw wave." in
+  let man = [
+    `S "DESCRIPTION";
+    `P "Write an audio file containing a saw wave.";
+  ] @ help_secs in
+  Term.(pure Commands.saw
+    $ channels
+    $ sample_rate
+    $ duration
+    $ tempo
+    $ beats
+    $ frequency
+    $ output_file),
+  Term.info "saw" ~doc ~man
+
 let sine_cmd =
   let doc = "write an audio file containing a sine wave." in
   let man = [
@@ -106,6 +122,7 @@ let default_command =
 
 let commands = [
   help_cmd;
+  saw_cmd;
   sine_cmd;
   square_cmd;
 ]
