@@ -82,6 +82,22 @@ let sine_cmd =
     $ output_file),
   Term.info "sine" ~doc ~man
 
+let square_cmd =
+  let doc = "write an audio file containing a square wave." in
+  let man = [
+    `S "DESCRIPTION";
+    `P "Write an audio file containing a square wave.";
+  ] @ help_secs in
+  Term.(pure Commands.square
+    $ channels
+    $ sample_rate
+    $ duration
+    $ tempo
+    $ beats
+    $ frequency
+    $ output_file),
+  Term.info "square" ~doc ~man
+
 let default_command =
   let doc = "mkaudio" in
   let man = help_secs in
@@ -91,6 +107,7 @@ let default_command =
 let commands = [
   help_cmd;
   sine_cmd;
+  square_cmd;
 ]
 
 let () =
