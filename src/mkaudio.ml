@@ -114,6 +114,21 @@ let square_cmd =
     $ output_file),
   Term.info "square" ~doc ~man
 
+let white_noise_cmd =
+  let doc = "write an audio file containing white noise." in
+  let man = [
+    `S "DESCRIPTION";
+    `P "Write an audio file containing white noise.";
+  ] @ help_secs in
+  Term.(pure Commands.white_noise
+    $ channels
+    $ sample_rate
+    $ duration
+    $ tempo
+    $ beats
+    $ output_file),
+  Term.info "white-noise" ~doc ~man
+
 let default_command =
   let doc = "mkaudio" in
   let man = help_secs in
@@ -125,6 +140,7 @@ let commands = [
   saw_cmd;
   sine_cmd;
   square_cmd;
+  white_noise_cmd;
 ]
 
 let () =

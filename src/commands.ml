@@ -53,3 +53,11 @@ let square channels sample_rate duration tempo beats frequency output_file =
       new Audio.Generator.of_mono
         (new Audio.Mono.Generator.square sample_rate frequency) in
     write_wav channels sample_rate samples generator output_file
+
+let white_noise channels sample_rate duration tempo beats output_file =
+  calculate_samples sample_rate duration tempo beats
+  >>= fun samples ->
+    let generator =
+      new Audio.Generator.of_mono
+        (new Audio.Mono.Generator.white_noise sample_rate) in
+    write_wav channels sample_rate samples generator output_file
