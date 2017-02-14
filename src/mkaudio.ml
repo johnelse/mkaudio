@@ -62,6 +62,18 @@ let frequency =
   let doc = "The frequency of the generated sound" in
   Arg.(value & opt float 440. & info ["frequency"] ~docv:"FREQUENCY" ~doc)
 
+let kick =
+  let doc = "String describing the kick drum pattern." in
+  Arg.(value & opt (some string) None & info ["kick"] ~docv:"KICK" ~doc)
+
+let snare =
+  let doc = "String describing the snare drum pattern." in
+  Arg.(value & opt (some string) None & info ["snare"] ~docv:"SNARE" ~doc)
+
+let hihat =
+  let doc = "String describing the hihat drum pattern." in
+  Arg.(value & opt (some string) None & info ["hihat"] ~docv:"HIHAT" ~doc)
+
 let output_file =
   let doc = "The file to write." in
   Arg.(required & pos 0 (some string) None & info [] ~docv:"OUTPUTFILE" ~doc)
@@ -130,6 +142,22 @@ let white_noise_cmd =
     $ output_file),
   Term.info "white-noise" ~doc ~man
 
+let beat_cmd =
+  let doc = "write an audio file containing a beat." in
+  let man = [
+    `S "DESCRIPTION";
+    `P "Write an audio file containing a beat.";
+  ] @ help_secs in
+  Term.(pure Commands.beat
+    $ channels
+    $ sample_rate
+    $ tempo
+    $ kick
+    $ snare
+    $ hihat
+    $ output_file),
+  Term.info "beat" ~doc ~man
+
 let default_command =
   let doc = "mkaudio" in
   let man = help_secs in
@@ -142,6 +170,7 @@ let commands = [
   sine_cmd;
   square_cmd;
   white_noise_cmd;
+  beat_cmd;
 ]
 
 let () =
