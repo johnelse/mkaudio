@@ -37,7 +37,7 @@ let help_cmd =
   Term.(ret (pure help $ Term.man_format $ Term.choice_names $ topic)),
   Term.info "help" ~doc ~man
 
-(* Command definitions. *)
+(* Argument definitions. *)
 let channels =
   let doc = "The number of channels to use when creating the audio file." in
   Arg.(value & opt int 2 & info ["channels"] ~docv:"CHANNELS" ~doc)
@@ -66,6 +66,7 @@ let output_file =
   let doc = "The file to write." in
   Arg.(required & pos 0 (some string) None & info [] ~docv:"OUTPUTFILE" ~doc)
 
+(* Command definitions. *)
 let saw_cmd =
   let doc = "write an audio file containing a saw wave." in
   let man = [
