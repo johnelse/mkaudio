@@ -8,8 +8,15 @@ Copyrights:   (C) 2017 John Else
 BuildTools:   ocamlbuild
 Plugins:      META (0.4), DevFiles (0.4)
 
+Library "mkaudio-libs"
+  Path:           lib
+  Findlibname:    mkaudio-libs
+  Install:        false
+  Modules:        Libs
+  BuildDepends:   mm, result
+
 Executable mkaudio
   CompiledObject: best
-  Path:           src
+  Path:           bin
   MainIs:         mkaudio.ml
-  BuildDepends:   cmdliner, mm, result
+  BuildDepends:   cmdliner, mkaudio-libs
