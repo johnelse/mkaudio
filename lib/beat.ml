@@ -1,34 +1,3 @@
-let to_sixteenths = function
-  | Some beats -> Some (beats * 4)
-  | None -> None
-
-let calculate_samples sample_rate duration tempo sixteenths =
-  match duration, tempo, sixteenths with
-  | Some duration, None, None ->
-    Result.Ok
-      ((float_of_int sample_rate) *. duration
-      |> int_of_float)
-  | None, Some tempo, Some sixteenths ->
-    Result.Ok
-      ((float_of_int (sample_rate * sixteenths * 60 / 4)) /. tempo
-      |> int_of_float)
-  | None, None, None
-  | Some _, _, _ ->
-    Result.Error
-      "You either need to specify the duration or the tempo and number of beats"
-  | None, _, _ ->
-    Result.Error "You need to specify both the tempo and number of beats"
-
-let write_wav channels sample_rate samples generator output_file =
-  let wav = new Audio.IO.Writer.to_wav_file channels sample_rate output_file in
-  let buffer_length = 1024 in
-  let buffer = Audio.create channels buffer_length in
-  for i = 0 to samples / buffer_length - 1 do
-    generator#fill buffer 0 buffer_length;
-    wav#write buffer 0 buffer_length
-  done;
-  Result.Ok (wav#close)
-
 type beat = {
   kick: bool;
   snare: bool;
@@ -61,7 +30,7 @@ let get_beat index = function
     else is_true (String.get pattern index)
   | None -> false
 
-let parse_beat_patterns kick snare hihat =
+let parse_patterns kick snare hihat =
   match get_length_if_equal [kick; snare; hihat]
   with
   | None ->

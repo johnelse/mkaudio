@@ -12,7 +12,7 @@ Library "mkaudio-libs"
   Path:           lib
   Findlibname:    mkaudio-libs
   Install:        false
-  Modules:        Libs
+  Modules:        Beat, Samples, Wav
   BuildDepends:   mm, result
 
 Executable mkaudio
