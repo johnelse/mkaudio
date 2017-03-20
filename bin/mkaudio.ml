@@ -44,7 +44,7 @@ let channels =
 
 let sample_rate =
   let doc = "The sample rate to use when creating the audio file." in
-  Arg.(value & opt int 44100 & info ["samplerate"] ~docv:"SAMPLERATE" ~doc)
+  Arg.(value & opt int 44100 & info ["sample-rate"] ~docv:"SAMPLERATE" ~doc)
 
 let duration =
   let doc = "The duration of the created file in seconds." in
