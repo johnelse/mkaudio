@@ -1,13 +1,3 @@
-let (>>=) value f =
-  match value with
-  | Result.Ok result -> f result
-  | Result.Error _ as error -> error
-
-let (>|=) value f =
-  match value with
-  | Result.Ok result -> Result.Ok (f result)
-  | Result.Error _ as error -> error
-
 let to_sixteenths = function
   | Some beats -> Some (beats * 4)
   | None -> None
@@ -96,4 +86,3 @@ let parse_beat_patterns kick snare hihat =
       |> List.rev
     )
   end
-
