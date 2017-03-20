@@ -1,4 +1,6 @@
 PKG cmdliner mm result
-S src
+S bin
+S lib
 
-B _build/src
+B _build/bin
+B _build/lib
