@@ -1,6 +1,8 @@
-PKG cmdliner mm result
+PKG cmdliner mm oUnit result
 S bin
 S lib
+S test
 
 B _build/bin
 B _build/lib
+B _build/test

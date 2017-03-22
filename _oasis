@@ -9,14 +9,26 @@ BuildTools:   ocamlbuild
 Plugins:      META (0.4), DevFiles (0.4)
 
 Library "mkaudio-libs"
-  Path:           lib
-  Findlibname:    mkaudio-libs
-  Install:        false
-  Modules:        Beat, Samples, Wav
-  BuildDepends:   mm, result
+  Path:             lib
+  Findlibname:      mkaudio-libs
+  Install:          false
+  Modules:          Beat, Samples, Wav
+  BuildDepends:     mm, result
 
 Executable mkaudio
-  CompiledObject: best
-  Path:           bin
-  MainIs:         mkaudio.ml
-  BuildDepends:   cmdliner, mkaudio-libs
+  CompiledObject:   best
+  Path:             bin
+  MainIs:           mkaudio.ml
+  BuildDepends:     cmdliner, mkaudio-libs
+
+Executable test_suite
+  Build$:           flag(tests)
+  CompiledObject:   best
+  Path:             test
+  MainIs:           test_suite.ml
+  BuildDepends:     mkaudio-libs, oUnit
+
+Test test_suite
+  Command:          $(test_suite)
+  Run$:             flag(tests)
+  WorkingDirectory: test
