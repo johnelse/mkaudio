@@ -23,14 +23,14 @@ let is_true = function
   | '1' | 'x' -> true
   | _ -> false
 
-let get_beat index = function
+let get_beat ~index = function
   | Some pattern ->
     if index < 0 || index >= (String.length pattern)
     then false
     else is_true (String.get pattern index)
   | None -> false
 
-let parse_patterns kick snare hihat =
+let parse_patterns ~kick ~snare ~hihat =
   match get_length_if_equal [kick; snare; hihat]
   with
   | None ->

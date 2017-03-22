@@ -13,36 +13,40 @@ let to_sixteenths = function
   | None -> None
 
 let saw channels sample_rate duration tempo beats frequency output_file =
-  Samples.calculate sample_rate duration tempo (to_sixteenths beats)
+  Samples.calculate
+    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
         (new Audio.Mono.Generator.saw sample_rate frequency) in
-    Wav.write channels sample_rate samples generator output_file
+    Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let sine channels sample_rate duration tempo beats frequency output_file =
-  Samples.calculate sample_rate duration tempo (to_sixteenths beats)
+  Samples.calculate
+    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
         (new Audio.Mono.Generator.sine sample_rate frequency) in
-    Wav.write channels sample_rate samples generator output_file
+    Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let square channels sample_rate duration tempo beats frequency output_file =
-  Samples.calculate sample_rate duration tempo (to_sixteenths beats)
+  Samples.calculate
+    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
         (new Audio.Mono.Generator.square sample_rate frequency) in
-    Wav.write channels sample_rate samples generator output_file
+    Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let white_noise channels sample_rate duration tempo beats output_file =
-  Samples.calculate sample_rate duration tempo (to_sixteenths beats)
+  Samples.calculate
+    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
         (new Audio.Mono.Generator.white_noise sample_rate) in
-    Wav.write channels sample_rate samples generator output_file
+    Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let kick_gen sample_rate =
   let adsr = Audio.Mono.Effect.ADSR.make sample_rate (0.001, 0.3, 0., 1.) in
@@ -69,7 +73,7 @@ let hihat_gen sample_rate =
   new Audio.Generator.of_mono snare
 
 let beat channels sample_rate tempo kick snare hihat output_file =
-  Beat.parse_patterns kick snare hihat
+  Beat.parse_patterns ~kick ~snare ~hihat
   >>= fun beats -> Samples.calculate sample_rate None tempo (Some (List.length beats))
   >>= fun samples ->
     let beat_length = samples / (List.length beats) in

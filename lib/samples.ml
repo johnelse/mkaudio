@@ -1,4 +1,4 @@
-let calculate sample_rate duration tempo sixteenths =
+let calculate ~sample_rate ~duration ~tempo ~sixteenths =
   match duration, tempo, sixteenths with
   | Some duration, None, None ->
     Result.Ok

@@ -1,4 +1,4 @@
-let write channels sample_rate samples generator output_file =
+let write ~channels ~sample_rate ~samples ~generator ~output_file =
   let wav = new Audio.IO.Writer.to_wav_file channels sample_rate output_file in
   let buffer_length = 1024 in
   let buffer = Audio.create channels buffer_length in
