@@ -74,7 +74,9 @@ let hihat_gen sample_rate =
 
 let beat channels sample_rate tempo kick snare hihat output_file =
   Beat.parse_patterns ~kick ~snare ~hihat
-  >>= fun beats -> Samples.calculate sample_rate None tempo (Some (List.length beats))
+  >>= fun beats ->
+    Samples.calculate
+      ~sample_rate ~duration:None ~tempo ~sixteenths:(Some (List.length beats))
   >>= fun samples ->
     let beat_length = samples / (List.length beats) in
     let buffer = Audio.create channels samples in
