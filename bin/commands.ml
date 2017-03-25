@@ -8,13 +8,13 @@ let (>|=) value f =
   | Result.Ok result -> Result.Ok (f result)
   | Result.Error _ as error -> error
 
-let to_sixteenths = function
+let to_steps = function
   | Some beats -> Some (beats * 4)
   | None -> None
 
 let saw channels sample_rate duration tempo beats frequency output_file =
   Samples.calculate
-    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
+    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -23,7 +23,7 @@ let saw channels sample_rate duration tempo beats frequency output_file =
 
 let sine channels sample_rate duration tempo beats frequency output_file =
   Samples.calculate
-    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
+    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -32,7 +32,7 @@ let sine channels sample_rate duration tempo beats frequency output_file =
 
 let square channels sample_rate duration tempo beats frequency output_file =
   Samples.calculate
-    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
+    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -41,7 +41,7 @@ let square channels sample_rate duration tempo beats frequency output_file =
 
 let white_noise channels sample_rate duration tempo beats output_file =
   Samples.calculate
-    ~sample_rate ~duration ~tempo ~sixteenths:(to_sixteenths beats)
+    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -76,7 +76,7 @@ let beat channels sample_rate tempo kick snare hihat output_file =
   Beat.parse_patterns ~kick ~snare ~hihat
   >>= fun beats ->
     Samples.calculate
-      ~sample_rate ~duration:None ~tempo ~sixteenths:(Some (List.length beats))
+      ~sample_rate ~duration:None ~tempo ~steps:(Some (List.length beats))
   >>= fun samples ->
     let beat_length = samples / (List.length beats) in
     let buffer = Audio.create channels samples in

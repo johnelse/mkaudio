@@ -1,12 +1,12 @@
-let calculate ~sample_rate ~duration ~tempo ~sixteenths =
-  match duration, tempo, sixteenths with
+let calculate ~sample_rate ~duration ~tempo ~steps =
+  match duration, tempo, steps with
   | Some duration, None, None ->
     Result.Ok
       ((float_of_int sample_rate) *. duration
       |> int_of_float)
-  | None, Some tempo, Some sixteenths ->
+  | None, Some tempo, Some steps ->
     Result.Ok
-      ((float_of_int (sample_rate * sixteenths * 60 / 4)) /. tempo
+      ((float_of_int (sample_rate * steps * 60 / 4)) /. tempo
       |> int_of_float)
   | None, None, None
   | Some _, _, _ ->

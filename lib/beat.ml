@@ -1,4 +1,4 @@
-type beat = {
+type step = {
   kick: bool;
   snare: bool;
   hihat: bool;
@@ -23,7 +23,7 @@ let is_true = function
   | '1' | 'x' -> true
   | _ -> false
 
-let get_beat ~index = function
+let is_hit_at ~index = function
   | Some pattern ->
     if index < 0 || index >= (String.length pattern)
     then false
@@ -37,21 +37,21 @@ let parse_patterns ~kick ~snare ~hihat =
     Result.Error
       "There must be at least one drum pattern; all must be the same length"
   | Some length -> begin
-    let rec compile_beats acc index =
+    let rec compile_steps acc index =
       if index < length
       then begin
         let acc = {
-          kick = get_beat index kick;
-          snare = get_beat index snare;
-          hihat = get_beat index hihat;
+          kick = is_hit_at index kick;
+          snare = is_hit_at index snare;
+          hihat = is_hit_at index hihat;
         } :: acc
         in
-        compile_beats acc (index + 1)
+        compile_steps acc (index + 1)
       end
       else acc
     in
     Result.Ok (
-      compile_beats [] 0
+      compile_steps [] 0
       |> List.rev
     )
   end
