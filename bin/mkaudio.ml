@@ -74,6 +74,10 @@ let hihat =
   let doc = "String describing the hihat drum pattern." in
   Arg.(value & opt (some string) None & info ["hihat"] ~docv:"HIHAT" ~doc)
 
+let repeats =
+  let doc = "Number of times the beat will be repeated" in
+  Arg.(value & opt int 1 & info ["repeats"] ~docv:"REPEATS" ~doc)
+
 let output_file =
   let doc = "The file to write." in
   Arg.(required & pos 0 (some string) None & info [] ~docv:"OUTPUTFILE" ~doc)
@@ -155,6 +159,7 @@ let beat_cmd =
     $ kick
     $ snare
     $ hihat
+    $ repeats
     $ output_file),
   Term.info "beat" ~doc ~man
 

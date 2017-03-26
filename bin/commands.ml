@@ -72,7 +72,8 @@ let hihat_gen sample_rate =
   let snare = new Audio.Mono.Generator.adsr adsr filtered in
   new Audio.Generator.of_mono snare
 
-let beat channels sample_rate tempo kick snare hihat output_file =
+let beat channels sample_rate tempo kick snare hihat repeats output_file =
+  let repeats = max 1 repeats in
   Beat.parse_patterns ~kick ~snare ~hihat
   >>= fun steps ->
     Samples.calculate
@@ -104,5 +105,7 @@ let beat channels sample_rate tempo kick snare hihat output_file =
         add_steps buffer (offset + 1) rest
       end
     in
-    add_steps buffer 0 steps;
+    for repeat = 1 to repeats do
+      add_steps buffer 0 steps
+    done;
     Result.Ok (wav#close)
