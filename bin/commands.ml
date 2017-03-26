@@ -74,34 +74,34 @@ let hihat_gen sample_rate =
 
 let beat channels sample_rate tempo kick snare hihat output_file =
   Beat.parse_patterns ~kick ~snare ~hihat
-  >>= fun beats ->
+  >>= fun steps ->
     Samples.calculate
-      ~sample_rate ~duration:None ~tempo ~steps:(Some (List.length beats))
+      ~sample_rate ~duration:None ~tempo ~steps:(Some (List.length steps))
   >>= fun samples ->
-    let beat_length = samples / (List.length beats) in
+    let step_length = samples / (List.length steps) in
     let buffer = Audio.create channels samples in
-    let rec add_beats buffer offset = function
+    let rec add_steps buffer offset = function
       | [] -> ()
       | beat :: rest -> begin
         if beat.Beat.kick
         then begin
           let kick_gen' = kick_gen sample_rate in
-          kick_gen'#fill_add buffer (offset * beat_length) beat_length
+          kick_gen'#fill_add buffer (offset * step_length) step_length
         end;
         if beat.Beat.snare
         then begin
           let snare_gen' = snare_gen sample_rate in
-          snare_gen'#fill_add buffer (offset * beat_length) beat_length
+          snare_gen'#fill_add buffer (offset * step_length) step_length
         end;
         if beat.Beat.hihat
         then begin
           let hihat_gen' = hihat_gen sample_rate in
-          hihat_gen'#fill_add buffer (offset * beat_length) beat_length
+          hihat_gen'#fill_add buffer (offset * step_length) step_length
         end;
-        add_beats buffer (offset + 1) rest
+        add_steps buffer (offset + 1) rest
       end
     in
-    add_beats buffer 0 beats;
+    add_steps buffer 0 steps;
     let wav = new Audio.IO.Writer.to_wav_file channels sample_rate output_file in
-    wav#write buffer 0 (beat_length * (List.length beats));
+    wav#write buffer 0 (step_length * (List.length steps));
     Result.Ok (wav#close)
