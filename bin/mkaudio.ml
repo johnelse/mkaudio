@@ -47,7 +47,10 @@ let sample_rate =
   Arg.(value & opt int 44100 & info ["sample-rate"] ~docv:"SAMPLERATE" ~doc)
 
 let duration =
-  let doc = "The duration of the created file." in
+  let doc = "The duration of the created file. Expected format is a number
+             followed by 's', 'm' or 'h', specifying seconds, minutes or hours
+             respectively. For example, 5s is 5 seconds, 2.5m is 2.5 minutes"
+  in
   Arg.(value & opt (some string) None & info ["duration"] ~docv:"DURATION" ~doc)
 
 let tempo =
@@ -151,6 +154,10 @@ let beat_cmd =
   let man = [
     `S "DESCRIPTION";
     `P "Write an audio file containing a beat.";
+    `P "";
+    `P "Kick, snare and hihat patterns should be specified as equal-length
+        strings, where each character which is '1' or 'x' corresponds to a
+        drum hit, and any other character corresponds to a lack of drum hit.";
   ] @ help_secs in
   Term.(pure Commands.beat
     $ channels
