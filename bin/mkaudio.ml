@@ -47,8 +47,8 @@ let sample_rate =
   Arg.(value & opt int 44100 & info ["sample-rate"] ~docv:"SAMPLERATE" ~doc)
 
 let duration =
-  let doc = "The duration of the created file in seconds." in
-  Arg.(value & opt (some float) None & info ["duration"] ~docv:"DURATION" ~doc)
+  let doc = "The duration of the created file." in
+  Arg.(value & opt (some string) None & info ["duration"] ~docv:"DURATION" ~doc)
 
 let tempo =
   let doc = "The tempo of the created file in beats per minute." in

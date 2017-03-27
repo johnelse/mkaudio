@@ -4,9 +4,19 @@ let to_steps = function
   | Some beats -> Some (beats * 4)
   | None -> None
 
+let parse_duration_opt = function
+  | Some str ->
+    Time.parse_duration str >|= (fun duration -> Some duration)
+  | None -> Result.Ok None
+
+let get_samples ~sample_rate ~duration ~tempo ~beats =
+  parse_duration_opt duration
+  >>= fun duration ->
+    Time.calculate_samples
+      ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
+
 let saw channels sample_rate duration tempo beats frequency output_file =
-  Time.calculate_samples
-    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
+  get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -14,8 +24,7 @@ let saw channels sample_rate duration tempo beats frequency output_file =
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let sine channels sample_rate duration tempo beats frequency output_file =
-  Time.calculate_samples
-    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
+  get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -23,8 +32,7 @@ let sine channels sample_rate duration tempo beats frequency output_file =
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let square channels sample_rate duration tempo beats frequency output_file =
-  Time.calculate_samples
-    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
+  get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
@@ -32,8 +40,7 @@ let square channels sample_rate duration tempo beats frequency output_file =
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let white_noise channels sample_rate duration tempo beats output_file =
-  Time.calculate_samples
-    ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
+  get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
