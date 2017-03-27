@@ -1,12 +1,4 @@
-let (>>=) value f =
-  match value with
-  | Result.Ok result -> f result
-  | Result.Error _ as error -> error
-
-let (>|=) value f =
-  match value with
-  | Result.Ok result -> Result.Ok (f result)
-  | Result.Error _ as error -> error
+open Fun
 
 let to_steps = function
   | Some beats -> Some (beats * 4)
