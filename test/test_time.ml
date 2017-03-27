@@ -2,13 +2,13 @@ open OUnit2
 
 let test_duration _ =
   assert_equal
-    (Samples.calculate
+    (Time.calculate_samples
       ~sample_rate:48000 ~duration:(Some 1.) ~tempo:None ~steps:None)
     (Result.Ok 48000)
 
 let test_tempo_and_steps _ =
   assert_equal
-    (Samples.calculate
+    (Time.calculate_samples
       ~sample_rate:48000 ~duration:None
       ~tempo:(Some 120.) ~steps:(Some 16))
     (Result.Ok 96000)
@@ -16,7 +16,7 @@ let test_tempo_and_steps _ =
 let test_missing_args _ =
   assert_bool "check missing args produce an error" (
     match
-      Samples.calculate
+      Time.calculate_samples
         ~sample_rate:48000 ~duration:None
         ~tempo:None ~steps:None
     with
@@ -27,7 +27,7 @@ let test_missing_args _ =
 let test_missing_tempo _ =
   assert_bool "check missing tempo produces an error" (
     match
-      Samples.calculate
+      Time.calculate_samples
         ~sample_rate:48000 ~duration:None
         ~tempo:None ~steps:(Some 16)
     with
@@ -38,7 +38,7 @@ let test_missing_tempo _ =
 let test_missing_steps _ =
   assert_bool "check missing tempo produces an error" (
     match
-      Samples.calculate
+      Time.calculate_samples
         ~sample_rate:48000 ~duration:None
         ~tempo:(Some 240.) ~steps:None
     with

@@ -13,7 +13,7 @@ let to_steps = function
   | None -> None
 
 let saw channels sample_rate duration tempo beats frequency output_file =
-  Samples.calculate
+  Time.calculate_samples
     ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
@@ -22,7 +22,7 @@ let saw channels sample_rate duration tempo beats frequency output_file =
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let sine channels sample_rate duration tempo beats frequency output_file =
-  Samples.calculate
+  Time.calculate_samples
     ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
@@ -31,7 +31,7 @@ let sine channels sample_rate duration tempo beats frequency output_file =
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let square channels sample_rate duration tempo beats frequency output_file =
-  Samples.calculate
+  Time.calculate_samples
     ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
@@ -40,7 +40,7 @@ let square channels sample_rate duration tempo beats frequency output_file =
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
 let white_noise channels sample_rate duration tempo beats output_file =
-  Samples.calculate
+  Time.calculate_samples
     ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
   >>= fun samples ->
     let generator =
@@ -76,7 +76,7 @@ let beat channels sample_rate tempo kick snare hihat repeats output_file =
   let repeats = max 1 repeats in
   Beat.parse_patterns ~kick ~snare ~hihat
   >>= fun steps ->
-    Samples.calculate
+    Time.calculate_samples
       ~sample_rate ~duration:None ~tempo ~steps:(Some (List.length steps))
   >>= fun samples ->
     let step_length = samples / (List.length steps) in

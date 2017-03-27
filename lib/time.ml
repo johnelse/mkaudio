@@ -1,4 +1,4 @@
-let calculate ~sample_rate ~duration ~tempo ~steps =
+let calculate_samples ~sample_rate ~duration ~tempo ~steps =
   match duration, tempo, steps with
   | Some duration, None, None ->
     Result.Ok

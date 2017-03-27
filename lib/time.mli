@@ -1,4 +1,4 @@
-val calculate :
+val calculate_samples :
   sample_rate:int ->
   duration:float option ->
   tempo:float option ->
