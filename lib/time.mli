@@ -1,3 +1,7 @@
+val parse_duration :
+  string ->
+  (float, string) Result.result
+
 val calculate_samples :
   sample_rate:int ->
   duration:float option ->
