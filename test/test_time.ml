@@ -14,6 +14,11 @@ let test_bad_interval _ =
     (Time.parse_duration "10q")
     (Result.Error "Unknown interval: q")
 
+let test_missing_interval _ =
+  assert_equal
+    (Time.parse_duration "10")
+    (Result.Error "Malformed duration: 10")
+
 let test_nonsense_input _ =
   assert_equal
     (Time.parse_duration "rj3k4h34j")
@@ -25,6 +30,7 @@ let parse_duration =
     "test_minutes" >:: test_minutes;
     "test_hours" >:: test_hours;
     "test_bad_interval" >:: test_bad_interval;
+    "test_missing_interval" >:: test_missing_interval;
     "test_nonsense_input" >:: test_nonsense_input;
   ]
 

@@ -7,7 +7,7 @@ let parse_duration str =
         | 'm' -> Result.Ok (num *. 60.0)
         | 'h' -> Result.Ok (num *. 3600.0)
         | _   -> Result.Error (Printf.sprintf "Unknown interval: %c" interval))
-  with Scanf.Scan_failure _ ->
+  with End_of_file | Scanf.Scan_failure _ ->
     Result.Error (Printf.sprintf "Malformed duration: %s" str)
 
 let calculate_samples ~sample_rate ~duration ~tempo ~steps =
