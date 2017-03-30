@@ -46,6 +46,10 @@ let sample_rate =
   let doc = "The sample rate to use when creating the audio file." in
   Arg.(value & opt int 44100 & info ["sample-rate"] ~docv:"SAMPLERATE" ~doc)
 
+let gain =
+  let doc = "The gain to apply to the audio output." in
+  Arg.(value & opt float 1.0 & info ["gain"] ~docv:"GAIN" ~doc)
+
 let duration =
   let doc = "The duration of the created file. Expected format is a number
              followed by 's', 'm' or 'h', specifying seconds, minutes or hours
@@ -95,6 +99,7 @@ let saw_cmd =
   Term.(pure Commands.saw
     $ channels
     $ sample_rate
+    $ gain
     $ duration
     $ tempo
     $ beats
@@ -111,6 +116,7 @@ let sine_cmd =
   Term.(pure Commands.sine
     $ channels
     $ sample_rate
+    $ gain
     $ duration
     $ tempo
     $ beats
@@ -127,6 +133,7 @@ let square_cmd =
   Term.(pure Commands.square
     $ channels
     $ sample_rate
+    $ gain
     $ duration
     $ tempo
     $ beats
@@ -143,6 +150,7 @@ let white_noise_cmd =
   Term.(pure Commands.white_noise
     $ channels
     $ sample_rate
+    $ gain
     $ duration
     $ tempo
     $ beats
@@ -162,6 +170,7 @@ let beat_cmd =
   Term.(pure Commands.beat
     $ channels
     $ sample_rate
+    $ gain
     $ tempo
     $ kick
     $ snare

@@ -15,63 +15,66 @@ let get_samples ~sample_rate ~duration ~tempo ~beats =
     Time.calculate_samples
       ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
 
-let saw channels sample_rate duration tempo beats frequency output_file =
+let saw channels sample_rate gain duration tempo beats frequency output_file =
   get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
-        (new Audio.Mono.Generator.saw sample_rate frequency) in
+        (new Audio.Mono.Generator.saw ~volume:gain sample_rate frequency) in
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
-let sine channels sample_rate duration tempo beats frequency output_file =
+let sine channels sample_rate gain duration tempo beats frequency output_file =
   get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
-        (new Audio.Mono.Generator.sine sample_rate frequency) in
+        (new Audio.Mono.Generator.sine ~volume:gain sample_rate frequency) in
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
-let square channels sample_rate duration tempo beats frequency output_file =
+let square channels sample_rate gain duration tempo beats frequency output_file =
   get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
-        (new Audio.Mono.Generator.square sample_rate frequency) in
+        (new Audio.Mono.Generator.square ~volume:gain sample_rate frequency) in
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
-let white_noise channels sample_rate duration tempo beats output_file =
+let white_noise channels sample_rate gain duration tempo beats output_file =
   get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->
     let generator =
       new Audio.Generator.of_mono
-        (new Audio.Mono.Generator.white_noise sample_rate) in
+        (new Audio.Mono.Generator.white_noise ~volume:gain sample_rate) in
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
-let kick_gen sample_rate =
+let kick_gen sample_rate gain =
   let adsr = Audio.Mono.Effect.ADSR.make sample_rate (0.001, 0.3, 0., 1.) in
-  let sine = new Audio.Mono.Generator.sine ~volume:0.4 sample_rate 60. in
+  let sine =
+    new Audio.Mono.Generator.sine ~volume:(0.4 *. gain) sample_rate 60. in
   let kick = new Audio.Mono.Generator.adsr adsr sine in
   new Audio.Generator.of_mono kick
 
-let snare_gen sample_rate =
+let snare_gen sample_rate gain =
   let lpf =
     new Audio.Mono.Effect.biquad_filter sample_rate `Low_pass 2000. 2. in
   let adsr = Audio.Mono.Effect.ADSR.make sample_rate (0., 0.08, 0., 1.) in
-  let noise = new Audio.Mono.Generator.white_noise ~volume:0.3 sample_rate in
+  let noise =
+    new Audio.Mono.Generator.white_noise ~volume:(0.3 *. gain) sample_rate in
   let filtered = new Audio.Mono.Generator.chain noise lpf in
   let snare = new Audio.Mono.Generator.adsr adsr filtered in
   new Audio.Generator.of_mono snare
 
-let hihat_gen sample_rate =
+let hihat_gen sample_rate gain =
   let hpf =
     new Audio.Mono.Effect.biquad_filter sample_rate `High_pass 8000. 2. in
   let adsr = Audio.Mono.Effect.ADSR.make sample_rate (0., 0.05, 0., 1.) in
-  let noise = new Audio.Mono.Generator.white_noise ~volume:0.3 sample_rate in
+  let noise =
+    new Audio.Mono.Generator.white_noise ~volume:(0.3 *. gain) sample_rate in
   let filtered = new Audio.Mono.Generator.chain noise hpf in
   let snare = new Audio.Mono.Generator.adsr adsr filtered in
   new Audio.Generator.of_mono snare
 
-let beat channels sample_rate tempo kick snare hihat repeats output_file =
+let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
   let repeats = max 1 repeats in
   Beat.parse_patterns ~kick ~snare ~hihat
   >>= fun steps ->
@@ -87,17 +90,17 @@ let beat channels sample_rate tempo kick snare hihat repeats output_file =
         Audio.clear buffer 0 step_length;
         if beat.Beat.kick
         then begin
-          let kick_gen' = kick_gen sample_rate in
+          let kick_gen' = kick_gen sample_rate gain in
           kick_gen'#fill_add buffer 0 step_length
         end;
         if beat.Beat.snare
         then begin
-          let snare_gen' = snare_gen sample_rate in
+          let snare_gen' = snare_gen sample_rate gain in
           snare_gen'#fill_add buffer 0 step_length
         end;
         if beat.Beat.hihat
         then begin
-          let hihat_gen' = hihat_gen sample_rate in
+          let hihat_gen' = hihat_gen sample_rate gain in
           hihat_gen'#fill_add buffer 0 step_length
         end;
         wav#write buffer 0 step_length;
