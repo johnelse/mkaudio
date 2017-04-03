@@ -1,6 +1,6 @@
 OASISFormat:  0.4
 Name:         mkaudio
-Version:      1.0.0
+Version:      1.0.1
 Synopsis:     CLI program for generating audio files
 License:      MIT
 Authors:      John Else
