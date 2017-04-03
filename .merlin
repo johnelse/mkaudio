@@ -3,6 +3,6 @@ S bin
 S lib
 S test
 
-B _build/bin
-B _build/lib
-B _build/test
+B _build/default/bin
+B _build/default/lib
+B _build/default/test

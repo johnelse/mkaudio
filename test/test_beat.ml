@@ -1,3 +1,4 @@
+open Mkaudio_libs
 open OUnit2
 
 let test_parse_kick_pattern _ =
