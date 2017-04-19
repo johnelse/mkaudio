@@ -70,7 +70,7 @@ let test_missing_tempo _ =
   )
 
 let test_missing_steps _ =
-  assert_bool "check missing tempo produces an error" (
+  assert_bool "check missing steps produces an error" (
     match
       Time.calculate_samples
         ~sample_rate:48000 ~duration:None
