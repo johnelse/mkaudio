@@ -7,6 +7,9 @@ dev-repo: "git://github.com/johnelse/spotify-cli"
 build: [
   [make "build"]
 ]
+build-test: [
+  [make "test"]
+]
 install: [
   [make "PREFIX=%{prefix}%" "install"]
 ]
