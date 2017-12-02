@@ -1,9 +1,9 @@
 opam-version: "1.2"
 author: "John Else <john.else@gmail.com>"
 maintainer: "John Else <john.else@gmail.com>"
-homepage: "https://github.com/johnelse/spotify-cli"
-bug-reports: "https://github.com/johnelse/spotify-cli/issues"
-dev-repo: "git://github.com/johnelse/spotify-cli"
+homepage: "https://github.com/johnelse/mkaudio"
+bug-reports: "https://github.com/johnelse/mkaudio/issues"
+dev-repo: "git://github.com/johnelse/mkaudio"
 build: [
   [make "build"]
 ]
