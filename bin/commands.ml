@@ -40,6 +40,14 @@ let square channels sample_rate gain duration tempo beats frequency output_file 
         (new Audio.Mono.Generator.square ~volume:gain sample_rate frequency) in
     Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
 
+let triangle channels sample_rate gain duration tempo beats frequency output_file =
+  get_samples ~sample_rate ~duration ~tempo ~beats
+  >>= fun samples ->
+    let generator =
+      new Audio.Generator.of_mono
+        (new Audio.Mono.Generator.triangle ~volume:gain sample_rate frequency) in
+    Wav.write ~channels ~sample_rate ~samples ~generator ~output_file
+
 let white_noise channels sample_rate gain duration tempo beats output_file =
   get_samples ~sample_rate ~duration ~tempo ~beats
   >>= fun samples ->

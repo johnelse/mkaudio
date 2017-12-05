@@ -141,6 +141,23 @@ let square_cmd =
     $ output_file),
   Term.info "square" ~doc ~man
 
+let triangle_cmd =
+  let doc = "write an audio file containing a triangle wave." in
+  let man = [
+    `S "DESCRIPTION";
+    `P "Write an audio file containing a triangle wave.";
+  ] @ help_secs in
+  Term.(pure Commands.triangle
+    $ channels
+    $ sample_rate
+    $ gain
+    $ duration
+    $ tempo
+    $ beats
+    $ frequency
+    $ output_file),
+  Term.info "triangle" ~doc ~man
+
 let white_noise_cmd =
   let doc = "write an audio file containing white noise." in
   let man = [
@@ -190,6 +207,7 @@ let commands = [
   saw_cmd;
   sine_cmd;
   square_cmd;
+  triangle_cmd;
   white_noise_cmd;
   beat_cmd;
 ]
