@@ -41,9 +41,9 @@ let parse_patterns ~kick ~snare ~hihat =
       if index < length
       then begin
         let acc = {
-          kick = is_hit_at index kick;
-          snare = is_hit_at index snare;
-          hihat = is_hit_at index hihat;
+          kick = is_hit_at ~index kick;
+          snare = is_hit_at ~index snare;
+          hihat = is_hit_at ~index hihat;
         } :: acc
         in
         compile_steps acc (index + 1)

@@ -17,7 +17,7 @@ remove: [
   [make "PREFIX=%{prefix}%" "uninstall"]
 ]
 depends: [
-  "jbuilder" {build}
+  "dune" {build}
   "ocamlfind" {build}
   "cmdliner"
   "mm"

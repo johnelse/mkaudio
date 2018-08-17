@@ -13,7 +13,7 @@ let help man_format cmds topic =
       List.iter print_endline topics;
       `Ok (Result.Ok ())
     | `Ok t when List.mem t cmds -> `Help (man_format, Some t)
-    | `Ok t ->
+    | `Ok _ ->
       let page = (topic, 7, "", "", ""), [`S topic; `P "Say something"] in
       Manpage.print man_format Format.std_formatter page;
       `Ok (Result.Ok ())

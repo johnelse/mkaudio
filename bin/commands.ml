@@ -108,7 +108,7 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
         add_steps buffer (offset + 1) rest
       end
     in
-    for repeat = 1 to repeats do
+    for _ = 1 to repeats do
       add_steps buffer 0 steps
     done;
     Result.Ok (wav#close)
