@@ -7,7 +7,7 @@ CLI program for generating audio files
 
 Supported commands:
 
-* `saw`, `sine`, `square`
+* `saw`, `sine`, `square`, `triangle`
 
 Generate a waveform with a specified duration and frequency. Duration can be
 specified in hours, minutes or seconds, or as a number of beats and a tempo in
