@@ -5,16 +5,16 @@ homepage: "https://github.com/johnelse/mkaudio"
 bug-reports: "https://github.com/johnelse/mkaudio/issues"
 dev-repo: "git://github.com/johnelse/mkaudio"
 build: [
-  [make "build"]
+  ["dune" "build" "@install" "-p" name]
 ]
 build-test: [
-  [make "test"]
+  ["dune" "runtest" "-p" name]
 ]
 install: [
-  [make "PREFIX=%{prefix}%" "install"]
+  ["dune" "install" "-p" name]
 ]
 remove: [
-  [make "PREFIX=%{prefix}%" "uninstall"]
+  ["dune" "uninstall" "-p" name]
 ]
 depends: [
   "dune" {build}
