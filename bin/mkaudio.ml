@@ -200,7 +200,7 @@ let default_command =
   let doc = "mkaudio" in
   let man = help_secs in
   Term.(ret (pure (fun _ -> `Help (`Pager, None)) $ pure ())),
-  Term.info "mkaudio" ~version:"0.1" ~doc ~man
+  Term.info "mkaudio" ~version:"1.1.0" ~doc ~man
 
 let commands = [
   help_cmd;
