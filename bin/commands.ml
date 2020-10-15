@@ -96,23 +96,23 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
     let rec add_steps buffer offset = function
       | [] -> ()
       | beat :: rest -> begin
-        Audio.clear buffer 0 step_length;
+        Audio.clear buffer;
         if beat.Beat.kick
         then begin
           let kick_gen' = kick_gen sample_rate gain in
-          kick_gen'#fill_add buffer 0 step_length
+          kick_gen'#fill_add buffer
         end;
         if beat.Beat.snare
         then begin
           let snare_gen' = snare_gen sample_rate gain in
-          snare_gen'#fill_add buffer 0 step_length
+          snare_gen'#fill_add buffer
         end;
         if beat.Beat.hihat
         then begin
           let hihat_gen' = hihat_gen sample_rate gain in
-          hihat_gen'#fill_add buffer 0 step_length
+          hihat_gen'#fill_add buffer
         end;
-        wav#write buffer 0 step_length;
+        wav#write buffer;
         add_steps buffer (offset + 1) rest
       end
     in
