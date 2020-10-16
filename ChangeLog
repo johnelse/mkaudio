@@ -1,3 +1,6 @@
+1.1.1 (16-Oct-2020):
+ * Update to build against mm.0.6.0
+
 1.1.0 (03-Sep-2018):
  * Switch build system to dune
  * Add 'triangle' command for generating triangle waves
