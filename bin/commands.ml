@@ -72,17 +72,17 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
         Audio.clear buffer;
         if beat.Beat.kick
         then begin
-          let kick = Generators.kick sample_rate gain in
+          let kick = Generators.kick ~sample_rate ~gain in
           kick#fill_add buffer
         end;
         if beat.Beat.snare
         then begin
-          let snare = Generators.snare sample_rate gain in
+          let snare = Generators.snare ~sample_rate ~gain in
           snare#fill_add buffer
         end;
         if beat.Beat.hihat
         then begin
-          let hihat = Generators.hihat sample_rate gain in
+          let hihat = Generators.hihat ~sample_rate ~gain in
           hihat#fill_add buffer
         end;
         wav#write buffer;
