@@ -66,7 +66,7 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
     let step_length = samples / (List.length steps) in
     let buffer = Audio.create channels step_length in
     let wav = new Audio.IO.Writer.to_wav_file channels sample_rate output_file in
-    let rec add_steps buffer offset = function
+    let rec add_steps buffer = function
       | [] -> ()
       | beat :: rest -> begin
         Audio.clear buffer;
@@ -86,10 +86,10 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
           hihat#fill_add buffer
         end;
         wav#write buffer;
-        add_steps buffer (offset + 1) rest
+        add_steps buffer rest
       end
     in
     for _ = 1 to repeats do
-      add_steps buffer 0 steps
+      add_steps buffer steps
     done;
     Result.Ok (wav#close)
