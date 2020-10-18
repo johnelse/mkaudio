@@ -1,6 +1,8 @@
 open Mkaudio_libs
 open Fun
 
+(* Helper functions. *)
+
 let to_steps = function
   | Some beats -> Some (beats * 4)
   | None -> None
@@ -48,6 +50,8 @@ let make_beat channels sample_rate gain samples steps =
   in
   add_steps 0 steps;
   beat_buffer
+
+(* Command definitions. *)
 
 let saw channels sample_rate gain duration tempo beats frequency output_file =
   get_samples ~sample_rate ~duration ~tempo ~beats
