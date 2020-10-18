@@ -1,5 +1,5 @@
 let kick ~sample_rate ~gain =
-  let adsr = Audio.Mono.Effect.ADSR.make sample_rate (0.001, 0.3, 0., 1.) in
+  let adsr = Audio.Mono.Effect.ADSR.make sample_rate (0.001, 0.1, 0., 1.) in
   let sine =
     new Audio.Mono.Generator.sine ~volume:(0.4 *. gain) sample_rate 60. in
   let kick = new Audio.Mono.Generator.adsr adsr sine in
