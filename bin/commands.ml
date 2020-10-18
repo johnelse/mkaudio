@@ -18,7 +18,7 @@ let get_samples ~sample_rate ~duration ~tempo ~beats =
     Time.calculate_samples
       ~sample_rate ~duration ~tempo ~steps:(to_steps beats)
 
-let make_beat channels sample_rate gain samples steps =
+let make_beat ~channels ~sample_rate ~gain ~samples ~steps =
   let step_length = samples / (List.length steps) in
   let step_buffer = Audio.create channels step_length in
   let beat_buffer = Audio.create channels samples in
@@ -100,7 +100,7 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
     Time.calculate_samples
       ~sample_rate ~duration:None ~tempo ~steps:(Some (List.length steps))
   >>= fun samples ->
-    let beat_buffer = make_beat channels sample_rate gain samples steps in
+    let beat_buffer = make_beat ~channels ~sample_rate ~gain ~samples ~steps in
     let wav = new Audio.IO.Writer.to_wav_file channels sample_rate output_file in
     for _ = 1 to repeats do
       wav#write beat_buffer
