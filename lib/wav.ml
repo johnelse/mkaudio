@@ -1,22 +1,19 @@
 let write ~channels ~sample_rate ~samples ~generator ~output_file =
   let wav = new Audio.IO.Writer.to_wav_file channels sample_rate output_file in
 
-  let main_buffer_length = 1024 in
-  let main_buffer = Audio.create channels main_buffer_length in
-
-  let end_buffer_length = samples mod main_buffer_length in
-  let end_buffer = Audio.create channels end_buffer_length in
+  let buffer_length = 1024 in
+  let buffer = Audio.create channels buffer_length in
 
   let rec write samples_left =
     if samples_left > 0 then begin
-      let buffer =
-        if samples_left >= main_buffer_length
-        then main_buffer
-        else end_buffer
+      let output_buffer =
+        if samples_left >= buffer_length
+        then buffer
+        else Audio.sub buffer 0 samples_left
       in
 
-      generator#fill buffer;
-      wav#write buffer;
+      generator#fill output_buffer;
+      wav#write output_buffer;
       write (samples_left - (Audio.length buffer))
     end
   in
