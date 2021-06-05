@@ -1,7 +1,7 @@
 mkaudio
 =======
 
-[![Build status](https://travis-ci.org/johnelse/mkaudio.png?branch=master)](https://travis-ci.org/johnelse/mkaudio)
+[![Build status](https://github.com/johnelse/mkaudio/actions/workflows/workflow.yml/badge.svg)](https://github.com/johnelse/mkaudio/actions)
 
 CLI program for generating audio files
 
