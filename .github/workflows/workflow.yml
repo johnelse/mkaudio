@@ -26,7 +26,7 @@ jobs:
       - name: Use OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-version: ${{ matrix.ocaml-compiler }}
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
       - run: opam install . --deps-only --with-doc --with-test
 
