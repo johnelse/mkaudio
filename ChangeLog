@@ -1,3 +1,7 @@
+1.1.2 (05-Jun-2021):
+ * Update to build against mm.0.7.0
+ * Shorten the kick drum sound
+
 1.1.1 (16-Oct-2020):
  * Update to build against mm.0.6.0
 
