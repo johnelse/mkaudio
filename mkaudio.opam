@@ -3,12 +3,13 @@ maintainer: "John Else <john.else@gmail.com>"
 homepage: "https://github.com/johnelse/mkaudio"
 bug-reports: "https://github.com/johnelse/mkaudio/issues"
 dev-repo: "git://github.com/johnelse/mkaudio"
+license: "MIT"
 build: [
   ["dune" "build" "@install" "-p" name "-j" jobs]
   ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
 depends: [
-  "ocaml"
+  "ocaml" {>= "4.03.0"}
   "dune" {>= "2.0"}
   "cmdliner"
   "mm" {>= "0.7.0"}
