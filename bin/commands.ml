@@ -25,26 +25,25 @@ let make_beat ~channels ~sample_rate ~gain ~samples ~steps =
   let rec add_steps offset = function
     | [] -> ()
     | beat :: rest -> begin
-      Mm.Audio.clear step_buffer;
+      Mm.Audio.clear step_buffer 0 step_length;
 
       if beat.Beat.kick
       then begin
         let kick = Generators.kick ~sample_rate ~gain in
-        kick#fill_add step_buffer
+        kick#fill_add step_buffer 0 step_length
       end;
       if beat.Beat.snare
       then begin
         let snare = Generators.snare ~sample_rate ~gain in
-        snare#fill_add step_buffer
+        snare#fill_add step_buffer 0 step_length
       end;
       if beat.Beat.hihat
       then begin
         let hihat = Generators.hihat ~sample_rate ~gain in
-        hihat#fill_add step_buffer
+        hihat#fill_add step_buffer 0 step_length
       end;
 
-      let target_buffer = Mm.Audio.sub beat_buffer offset step_length in
-      Mm.Audio.blit step_buffer target_buffer;
+      Mm.Audio.blit step_buffer 0 beat_buffer offset step_length;
       add_steps (offset + step_length) rest
     end
   in
@@ -103,6 +102,6 @@ let beat channels sample_rate gain tempo kick snare hihat repeats output_file =
     let beat_buffer = make_beat ~channels ~sample_rate ~gain ~samples ~steps in
     let wav = new Mm.Audio.IO.Writer.to_wav_file channels sample_rate output_file in
     for _ = 1 to repeats do
-      wav#write beat_buffer
+      wav#write beat_buffer 0 samples
     done;
     Result.Ok (wav#close)

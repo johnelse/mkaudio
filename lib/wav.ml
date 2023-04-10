@@ -6,15 +6,11 @@ let write ~channels ~sample_rate ~samples ~generator ~output_file =
 
   let rec write samples_left =
     if samples_left > 0 then begin
-      let output_buffer =
-        if samples_left >= buffer_length
-        then buffer
-        else Mm.Audio.sub buffer 0 samples_left
-      in
+      let samples_to_write = min samples_left buffer_length in
+      generator#fill buffer 0 samples_to_write;
+      wav#write buffer 0 samples_to_write;
 
-      generator#fill output_buffer;
-      wav#write output_buffer;
-      write (samples_left - (Mm.Audio.length buffer))
+      write (samples_left - samples_to_write)
     end
   in
 
