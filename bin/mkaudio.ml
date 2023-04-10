@@ -34,8 +34,9 @@ let help_cmd =
     `S "DESCRIPTION";
     `P "Prints help about mkaudio commands."
   ] @ help_secs in
-  Term.(ret (pure help $ Term.man_format $ Term.choice_names $ topic)),
-  Term.info "help" ~doc ~man
+  Cmd.v
+    (Cmd.info "help" ~doc ~man)
+    (Term.(ret (const help $ Arg.man_format $ Term.choice_names $ topic)))
 
 (* Argument definitions. *)
 let channels =
@@ -96,16 +97,17 @@ let saw_cmd =
     `S "DESCRIPTION";
     `P "Write an audio file containing a saw wave.";
   ] @ help_secs in
-  Term.(pure Commands.saw
-    $ channels
-    $ sample_rate
-    $ gain
-    $ duration
-    $ tempo
-    $ beats
-    $ frequency
-    $ output_file),
-  Term.info "saw" ~doc ~man
+  Cmd.v
+    (Cmd.info "saw" ~doc ~man)
+    (Term.(const Commands.saw
+      $ channels
+      $ sample_rate
+      $ gain
+      $ duration
+      $ tempo
+      $ beats
+      $ frequency
+      $ output_file))
 
 let sine_cmd =
   let doc = "write an audio file containing a sine wave." in
@@ -113,16 +115,17 @@ let sine_cmd =
     `S "DESCRIPTION";
     `P "Write an audio file containing a sine wave.";
   ] @ help_secs in
-  Term.(pure Commands.sine
-    $ channels
-    $ sample_rate
-    $ gain
-    $ duration
-    $ tempo
-    $ beats
-    $ frequency
-    $ output_file),
-  Term.info "sine" ~doc ~man
+  Cmd.v
+    (Cmd.info "sine" ~doc ~man)
+    (Term.(const Commands.sine
+      $ channels
+      $ sample_rate
+      $ gain
+      $ duration
+      $ tempo
+      $ beats
+      $ frequency
+      $ output_file))
 
 let square_cmd =
   let doc = "write an audio file containing a square wave." in
@@ -130,16 +133,17 @@ let square_cmd =
     `S "DESCRIPTION";
     `P "Write an audio file containing a square wave.";
   ] @ help_secs in
-  Term.(pure Commands.square
-    $ channels
-    $ sample_rate
-    $ gain
-    $ duration
-    $ tempo
-    $ beats
-    $ frequency
-    $ output_file),
-  Term.info "square" ~doc ~man
+  Cmd.v
+    (Cmd.info "square" ~doc ~man)
+    (Term.(const Commands.square
+      $ channels
+      $ sample_rate
+      $ gain
+      $ duration
+      $ tempo
+      $ beats
+      $ frequency
+      $ output_file))
 
 let triangle_cmd =
   let doc = "write an audio file containing a triangle wave." in
@@ -147,16 +151,17 @@ let triangle_cmd =
     `S "DESCRIPTION";
     `P "Write an audio file containing a triangle wave.";
   ] @ help_secs in
-  Term.(pure Commands.triangle
-    $ channels
-    $ sample_rate
-    $ gain
-    $ duration
-    $ tempo
-    $ beats
-    $ frequency
-    $ output_file),
-  Term.info "triangle" ~doc ~man
+  Cmd.v
+    (Cmd.info "triangle" ~doc ~man)
+    (Term.(const Commands.triangle
+      $ channels
+      $ sample_rate
+      $ gain
+      $ duration
+      $ tempo
+      $ beats
+      $ frequency
+      $ output_file))
 
 let white_noise_cmd =
   let doc = "write an audio file containing white noise." in
@@ -164,15 +169,16 @@ let white_noise_cmd =
     `S "DESCRIPTION";
     `P "Write an audio file containing white noise.";
   ] @ help_secs in
-  Term.(pure Commands.white_noise
-    $ channels
-    $ sample_rate
-    $ gain
-    $ duration
-    $ tempo
-    $ beats
-    $ output_file),
-  Term.info "white-noise" ~doc ~man
+  Cmd.v
+    (Cmd.info "white-noise" ~doc ~man)
+    (Term.(const Commands.white_noise
+      $ channels
+      $ sample_rate
+      $ gain
+      $ duration
+      $ tempo
+      $ beats
+      $ output_file))
 
 let beat_cmd =
   let doc = "write an audio file containing a beat." in
@@ -184,23 +190,26 @@ let beat_cmd =
         strings, where each character which is '1' or 'x' corresponds to a
         drum hit, and any other character corresponds to a lack of drum hit.";
   ] @ help_secs in
-  Term.(pure Commands.beat
-    $ channels
-    $ sample_rate
-    $ gain
-    $ tempo
-    $ kick
-    $ snare
-    $ hihat
-    $ repeats
-    $ output_file),
-  Term.info "beat" ~doc ~man
+  Cmd.v
+    (Cmd.info "beat" ~doc ~man)
+    (Term.(const Commands.beat
+      $ channels
+      $ sample_rate
+      $ gain
+      $ tempo
+      $ kick
+      $ snare
+      $ hihat
+      $ repeats
+      $ output_file))
 
-let default_command =
+let default_info =
   let doc = "mkaudio" in
   let man = help_secs in
-  Term.(ret (pure (fun _ -> `Help (`Pager, None)) $ pure ())),
-  Term.info "mkaudio" ~version:"1.1.0" ~doc ~man
+  Cmd.info "mkaudio" ~version:"1.1.0" ~doc ~man
+
+let default_term =
+  Term.(ret (const (fun _ -> `Help (`Pager, None)) $ const ()))
 
 let commands = [
   help_cmd;
@@ -214,9 +223,6 @@ let commands = [
 
 let () =
   Printexc.record_backtrace true;
-  match Term.eval_choice default_command commands with
-  | `Error _ -> exit 1
-  | `Ok (Result.Ok ()) | `Version | `Help -> ()
-  | `Ok (Result.Error msg) ->
-    print_endline msg;
-    exit 1
+  let command = Cmd.group ~default:default_term default_info commands in
+  let exit_code = Cmd.eval_result command in
+  exit exit_code
