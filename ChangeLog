@@ -1,3 +1,7 @@
+1.1.3 (12-Apr-2023):
+ * Remove usage of cmdliner functionality deprecated in 1.1.0
+ * Update to build mm 0.8.0
+
 1.1.2 (05-Jun-2021):
  * Update to build against mm.0.7.0
  * Shorten the kick drum sound
