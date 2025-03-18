@@ -206,7 +206,7 @@ let beat_cmd =
 let default_info =
   let doc = "mkaudio" in
   let man = help_secs in
-  Cmd.info "mkaudio" ~version:"1.1.0" ~doc ~man
+  Cmd.info "mkaudio" ~version:"1.1.4" ~doc ~man
 
 let default_term =
   Term.(ret (const (fun _ -> `Help (`Pager, None)) $ const ()))

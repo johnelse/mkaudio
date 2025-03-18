@@ -1,3 +1,7 @@
+1.1.4 (18-Mar-2025):
+ * Fix build issues with upcoming cmdliner.2.0.0
+ * Modernise github action
+
 1.1.3 (12-Apr-2023):
  * Remove usage of cmdliner functionality deprecated in 1.1.0
  * Update to build mm 0.8.0
