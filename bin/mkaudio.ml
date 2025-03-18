@@ -6,14 +6,14 @@ let help man_format cmds topic =
   | None -> `Help (`Pager, None)
   | Some topic ->
     let topics = "topics" :: cmds in
-    let conv, _ = Arg.enum (List.rev_map (fun s -> (s, s)) topics) in
-    match conv topic with
-    | `Error e -> `Error (false, e)
-    | `Ok t when t = "topics" ->
+    let conv = Arg.enum (List.rev_map (fun s -> (s, s)) topics) in
+    match Arg.conv_parser conv topic with
+    | Error (`Msg e) -> `Error (false, e)
+    | Ok t when t = "topics" ->
       List.iter print_endline topics;
       `Ok (Result.Ok ())
-    | `Ok t when List.mem t cmds -> `Help (man_format, Some t)
-    | `Ok _ ->
+    | Ok t when List.mem t cmds -> `Help (man_format, Some t)
+    | Ok _ ->
       let page = (topic, 7, "", "", ""), [`S topic; `P "Say something"] in
       Manpage.print man_format Format.std_formatter page;
       `Ok (Result.Ok ())
